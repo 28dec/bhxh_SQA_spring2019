@@ -12,7 +12,7 @@ cursor.execute('select * from devvn_tinhthanhpho')
 provinces = cursor.fetchall()
 def req_create_customer(name, place_of_birth):
 	url = 'http://localhost/bhxh/controller.php'
-	jobs = ['Công nhân', 'Bảo vệ', 'Nhân viên', 'Trưởng phòng', 'Giám đốc']
+	jobs = ['Công nhân', 'Bảo vệ', 'Nhân viên', 'Trưởng phòng', 'Tự do']
 	month = str(random.randint(1, 12))
 	day = str(random.randint(10, 29))
 	if len(month) == 1: month = '0'+month
@@ -20,7 +20,7 @@ def req_create_customer(name, place_of_birth):
 	payload = {
 		'command': 'create_customer',
 		'id':'125' + str(random.randint(100000, 999999)),
-		'code':''.join(random.choices(string.ascii_uppercase, k = 2)) + ''.join(random.choices(string.digits, k = 8)),
+		'code':'100' + ''.join(random.choices(string.digits, k = 5)),
 		'full_name':name,
 		'job':random.choice(jobs),
 		'date_of_birth': day + month + str(random.randint(1950, 2000)),

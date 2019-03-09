@@ -21,6 +21,7 @@
 				$db_model->add_customer_to_company($_POST['customer_code'], $_POST['company_id'], $_POST['from_date']);
 				break;
 			case 'system_report':
+				$total_customer_paid = $this->db_model->get_total_customer_paid($_POST['from_date'], $_POST['to_date']);
 				echo "<table>";
 					echo "<th>";
 						

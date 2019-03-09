@@ -40,20 +40,20 @@ def req_customer_workin_company(customer_code, company_rid, from_date):
 	return
 
 def main():
-	# req_customer_workin_company('AA01686800', '2', '03-2012')
-	# for i in range(10, 11):
+	#create company
+	# for i in range(1, 20):
 	# 	req_cr_company("cong ty " + str(i), "_", "_", "_", "_", random.choice([1, 2, 3, 4]))
-	# print(from_date)
+	
+	#add customer to company
 	cursor.execute("select * from Customer")
 	customers = cursor.fetchall()
 	for customer in customers:
 		month = random.randint(1, 12)
 		if month < 10: month = '0' + str(month)
 		month = str(month)
-		from_date = month + '-' + str(random.randint(1995, 2017))
+		from_date = month + '/' + str(random.randint(1995, 2017))
 		c_id = customer[2]
 		req_customer_workin_company(c_id, random.randint(1, 19), from_date)
-		# break
 	return
 
 if __name__ == '__main__':
