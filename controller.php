@@ -23,7 +23,7 @@
 			case 'system_report':
 				echo "<table>";
 					echo "<th>";
-						echo "";
+						
 					echo "</th>";
 				echo "</table>";
 				break;
