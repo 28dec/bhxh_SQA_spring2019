@@ -51,7 +51,17 @@
 			} else {
 				print_r($stmt->errorInfo());
 			}
-
+		}
+		public function get_total_customer_paid($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_customer_paid(?,?)");
+			$stmt->bindParam(1, $from_date);
+			$stmt->bindParam(2, $to_date);
+			if($stmt->execute()){
+				$rps = $stmt->fetch();
+				return $rps;
+			} else {
+				print_r($stmt->errorInfo());
+			}
 		}
 	}
 ?>

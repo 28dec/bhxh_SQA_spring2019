@@ -22,6 +22,13 @@
 			</div>
 		</div>
 	</div>
+	<div class="container">
+		<h1>result1</h1>
+		<div id="div_result_theodoidanhsach">
+			<table id="result_theodoidanhsach" "></table>
+
+		</div>
+	</div>
 	<div id="popup_theodoidanhsach" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -29,7 +36,13 @@
 					
 				</div>
 				<div class="modal-body">
-					<h1>x</h1>
+					<!-- <form id="form_1218" method="post" action="#"> -->
+						<input type="text" name="from_date" id = "from_date_theodoidanhsach">
+						<input type="text" name="to_date" id = "to_date_theodoidanhsach">
+						<input type="submit" name="submit" id = "submit_btn_theodoidanhsach">
+					<!-- </form> -->
+				</div>
+				<div class="modal-footer">
 				</div>
 			</div>
 		</div>
