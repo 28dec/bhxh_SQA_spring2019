@@ -31,8 +31,8 @@
 					<h3>BẢO HIỂM XÃ HỘI TỰ NGUYỆN</h3>
 				</div>
 			</div>
-			<div id="div_result_theodoidanhsach">
-				<table id="result_theodoidanhsach" "></table>
+			<div id="div_result_theodoidanhsach_voluntary">
+				<table id="table_result_theodoidanhsach_voluntary"></table>
 			</div>
 		</div>
 		<div class="result_compulsory">
@@ -40,6 +40,9 @@
 				<div class="row">
 					<h3>BẢO HIỂM XÃ HỘI BẮT BUỘC</h3>
 				</div>
+			</div>
+			<div id="div_result_theodoidanhsach_compulsory">
+				<table id="table_result_theodoidanhsach_compulsory"></table>
 			</div>
 		</div>
 	</div>

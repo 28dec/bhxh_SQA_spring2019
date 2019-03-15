@@ -235,7 +235,7 @@ CREATE TABLE `rule` (
   `is_deleted` int(11) DEFAULT '0',
   `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`rid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,7 +244,7 @@ CREATE TABLE `rule` (
 
 LOCK TABLES `rule` WRITE;
 /*!40000 ALTER TABLE `rule` DISABLE KEYS */;
-INSERT INTO `rule` VALUES (1,15,17,8,10,4700000,4400000,4100000,3700000,0,'2019-03-15 03:27:22'),(2,15,17,8,10,4700000,4400000,4100000,3700000,0,'2019-03-15 03:28:37'),(3,15,17,8,10,4700000,4400000,4100000,3700000,0,'2019-03-15 03:29:03'),(4,15,17,8,10,5000000,4400000,4100000,3700000,0,'2019-03-15 03:54:23');
+INSERT INTO `rule` VALUES (1,15,17,8,10,4700000,4400000,4100000,3700000,0,'2019-03-15 03:27:22'),(2,15,17,8,10,4700000,4400000,4100000,3700000,0,'2019-03-15 03:28:37'),(3,15,17,8,10,4700000,4400000,4100000,3700000,0,'2019-03-15 03:29:03'),(4,15,17,8,10,5000000,4400000,4100000,3700000,0,'2019-03-15 03:54:23'),(5,16,17,8,10,5000000,4400000,4100000,3700000,0,'2019-03-15 09:39:35');
 /*!40000 ALTER TABLE `rule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,7 +258,6 @@ DROP TABLE IF EXISTS `salary`;
 CREATE TABLE `salary` (
   `rid` int(11) NOT NULL AUTO_INCREMENT,
   `salary` int(11) DEFAULT NULL,
-  `pay_date` datetime DEFAULT NULL,
   `is_deleted` int(11) DEFAULT '0',
   `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `customer_code` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -379,11 +378,12 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `customer_pay_insurance`(IN _customer_code varchar(50)
 										  ,IN _pay_date varchar(50)
-                                          ,IN _money int
 )
 BEGIN
 	declare _type varchar(50);
+    declare _money int;
     select `type_of_insurance` into _type from customer where `code` = _customer_code;
+    select `salary` into _money from salary where `customer_code` = _customer_code;
 	insert into Insurance (`customer_code`, `pay_date`, `money`, `type_of_insurance`)
     values(_customer_code, STR_TO_DATE(concat('01/', _pay_date), '%d/%m/%Y'), _money, _type);
     select 'SUCCESS' as result;
@@ -426,6 +426,145 @@ BEGIN
         update Customer set type_of_insurance = 'COMPULSORY' where `code` = customer_code;
         select 'SUCCESS' as result;
 	end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_company` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_company`()
+BEGIN
+	select count(*) from company;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_compulsory_customer` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_compulsory_customer`(in _from_date varchar(50), in _to_date varchar(50))
+BEGIN
+	select count(*)
+    from customer
+    where `type_of_insurance` = 'COMPULSORY';
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_compulsory_paid_money` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_compulsory_paid_money`(in _from_date varchar(50), in _to_date varchar(50))
+BEGIN
+	select sum(money)
+    from insurance
+    where STR_TO_DATE(concat('01/', _from_date), '%d/%m/%Y') <= pay_date and pay_date <= STR_TO_DATE(concat('01/', _to_date), '%d/%m/%Y') and `type_of_insurance` = 'COMPULSORY';
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_compulsory_unpaid_money` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_compulsory_unpaid_money`(in _from_date varchar(50), in _to_date varchar(50))
+BEGIN
+	select sum(salary) from salary where customer_code in (select customer_code from customer where customer_code not in (select customer_code from insurance where STR_TO_DATE(concat('01/', _from_date), '%d/%m/%Y') <= pay_date and pay_date <= STR_TO_DATE(concat('01/', _to_date), '%d/%m/%Y') and `type_of_insurance` = 'COMPULSORY'));
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_current_labor` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_current_labor`()
+BEGIN
+	select count(*)
+    from company_has_customer
+    where `to_date` = STR_TO_DATE('01/12/9999', '%d/%m/%Y');
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_paid_company` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_paid_company`(in _from_date varchar(50), in _to_date varchar(50))
+BEGIN
+	select distinct company_rid from company_has_customer where customer_code in (select distinct customer_code from Insurance where STR_TO_DATE(concat('01/', _from_date), '%d/%m/%Y') <= pay_date and pay_date <= STR_TO_DATE(concat('01/', _to_date), '%d/%m/%Y'));
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_unpaid_company` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_unpaid_company`(in _from_date varchar(50), in _to_date varchar(50))
+BEGIN
+	select distinct company_rid from company_has_customer where customer_code not in (select distinct customer_code from Insurance where STR_TO_DATE(concat('01/', _from_date), '%d/%m/%Y') <= pay_date and pay_date <= STR_TO_DATE(concat('01/', _to_date), '%d/%m/%Y'));
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -488,8 +627,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_voluntary_customer_unpaid
 BEGIN
 	select count(*)
     from customer
-    where `code` not in (select distinct `customer_code` from insurance) and `type_of_insurance` = 'VOLUNTARY';
-	-- where created_date <= STR_TO_DATE(concat('01/', _from_date), '%d/%m/%Y') and `code` not in (select distinct `customer_code` from insurance);
+    -- where `code` not in (select distinct `customer_code` from insurance) and `type_of_insurance` = 'VOLUNTARY';
+	where created_date <= STR_TO_DATE(concat('01/', _from_date), '%d/%m/%Y') and `code` not in (select distinct `customer_code` from insurance);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -510,7 +649,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_voluntary_paid_money`(in 
 BEGIN
 	select sum(money)
     from insurance
-    where STR_TO_DATE(concat('01/', _from_date), '%d/%m/%Y') <= pay_date and pay_date <= STR_TO_DATE(concat('01/', _to_date), '%d/%m/%Y');
+    where STR_TO_DATE(concat('01/', _from_date), '%d/%m/%Y') <= pay_date and pay_date <= STR_TO_DATE(concat('01/', _to_date), '%d/%m/%Y') and `type_of_insurance` = 'VOLUNTARY';
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -549,4 +688,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-15 11:26:43
+-- Dump completed on 2019-03-15 19:38:40

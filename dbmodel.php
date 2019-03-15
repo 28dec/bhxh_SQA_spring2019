@@ -107,6 +107,17 @@
 				return $stmt->errorInfo()[2];
 			}
 		}
+		public function get_total_compulsory_customer($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_compulsory_customer(?,?)");
+			$stmt->bindParam(1, $from_date);
+			$stmt->bindParam(2, $to_date);
+			if($stmt->execute()){
+				$rps = $stmt->fetch();
+				return $rps[0];
+			} else {
+				return $stmt->errorInfo()[2];
+			}
+		}
 		public function create_new_rule($min_age_to_participant_VSI, $company_CSI_percentage, $labor_CSI_percentage, $labor_VSI_percentage, $_1st_area_min_salary, $_2nd_area_min_salary, $_3rd_area_min_salary, $_4th_area_min_salary){
 			$stmt = $this->pdo->prepare("call create_new_rule(?, ?, ?, ?, ?, ?, ?, ?);");
 			$stmt->bindParam(1, $min_age_to_participant_VSI);
@@ -132,7 +143,45 @@
 			} else {
 				print(json_encode(array('error'=>"load rule error")));
 			}
-
+		}
+		public function get_total_company($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_company()");
+			if($stmt->execute()){
+				$rps = $stmt->fetch();
+				return $rps[0];
+			} else {
+				return $stmt->errorInfo()[2];
+			}
+		}
+		public function get_total_compulsory_paid_money($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_compulsory_paid_money(?, ?)");
+			$stmt->bindParam(1, $from_date);
+			$stmt->bindParam(2, $to_date);
+			if($stmt->execute()){
+				return $stmt->fetch()[0];
+			} else {
+				return $stmt->errorInfo()[2];
+			}
+		}
+		public function get_total_paid_company($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_paid_company(?,?)");
+			$stmt->bindParam(1, $from_date);
+			$stmt->bindParam(2, $to_date);
+			if($stmt->execute()){
+				return $stmt->fetchall();
+			} else {
+				return $stmt->errorInfo()[2];
+			}
+		}
+		public function get_total_unpaid_company($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_unpaid_company(?,?)");
+			$stmt->bindParam(1, $from_date);
+			$stmt->bindParam(2, $to_date);
+			if($stmt->execute()){
+				return $stmt->fetchall();
+			} else {
+				return $stmt->errorInfo()[2];
+			}
 		}
 	}
 ?>

@@ -1,8 +1,11 @@
 $(document).on("click", "#submit_btn_theodoidanhsach", function(){
 	// console.log("clicked")
-	var payload = {'command':'system_report', 'from_date':$("#from_date_theodoidanhsach").val(), 'to_date':$("#to_date_theodoidanhsach").val()}
-	console.log(payload)
-	$('#div_result_theodoidanhsach').load("controller.php", payload)
+	var payload_voluntary = {'command':'system_report', 'type':'voluntary', 'from_date':$("#from_date_theodoidanhsach").val(), 'to_date':$("#to_date_theodoidanhsach").val()}
+	var payload_compulsory = {'command':'system_report', 'type':'compulsory', 'from_date':$("#from_date_theodoidanhsach").val(), 'to_date':$("#to_date_theodoidanhsach").val()}
+	// console.log(payload_voluntary)
+	// console.log(payload_compulsory)
+	$('#div_result_theodoidanhsach_voluntary').load("controller.php", payload_voluntary)
+	$('#div_result_theodoidanhsach_compulsory').load("controller.php", payload_compulsory)
 })
 
 $(document).on("click", "#btn_cauhinh", function(){
