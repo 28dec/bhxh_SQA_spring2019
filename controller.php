@@ -78,8 +78,8 @@
 									echo "Tổng số tiền chưa thu";
 								echo '</td>';
 								echo '<td>';
-									// echo $total_voluntary_unpaid_money;
-									echo "2508960000"; // =))
+									echo $total_voluntary_unpaid_money;
+									// echo "2508960000"; // =))
 								echo '</td>';
 								echo '<td>';
 									echo "Đồng";
