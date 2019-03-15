@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<?php date_default_timezone_set('Asia/Ho_Chi_Minh'); ?>
 <head>
 	<title>He thong Bao hiem Xa hoi</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
@@ -27,24 +28,40 @@
 		<div id="xuatbaocao_person"></div>
 		<div id="xuatbaocao_company"></div>
 	</div>
-	<div class="container" id="result_theodoidanhsach" style="display: none">
-		<!-- <h1>RESULT</h1> -->
-		<div class="result_voluntary">
-			<div class="jumbotron">
-				<div class="row">
-					<h3>BẢO HIỂM XÃ HỘI TỰ NGUYỆN</h3>
-				</div>
+	<div class="container my-1 py-1" id="result_theodoidanhsach" style="display: none">
+		<div>
+			<div class="text-center">
+				<h4>BÁO CÁO HỆ THỐNG BẢO HIỂM XÃ HỘI</h4>
 			</div>
+			<div class="text-center">
+				<h6>Hà Nội, ngày <?php echo date('d', time()) ?> tháng <?php echo date('m', time()) ?> năm <?php echo date('Y', time()) ?> </h6>
+			</div>
+			<br>
+			<div class="text-left px-5">
+				<p>Kính gửi: ...</p>
+				<br>
+				<br>
+				<h6> Thời gian thống kê: Từ ... đến ...</h6>
+				<h6>Phạm vi báo cáo: Toàn quốc</h6>
+				<h6>Thời gian lập báo cáo: <?php echo date('d/m/Y h:i:s', time()) ?> </h6>
+			</div>
+		</div>
+		<div class="result_voluntary my-2 py-2">
+			<!-- <div class="jumbotron"> -->
+				<div class="row">
+					<h3>[*] BẢO HIỂM XÃ HỘI TỰ NGUYỆN</h3>
+				</div>
+			<!-- </div> -->
 			<div id="div_result_theodoidanhsach_voluntary">
 				<table id="table_result_theodoidanhsach_voluntary"></table>
 			</div>
 		</div>
-		<div class="result_compulsory">
-			<div class="jumbotron">
+		<div class="result_compulsory my-2 py-2">
+			<!-- <div class="jumbotron"> -->
 				<div class="row">
-					<h3>BẢO HIỂM XÃ HỘI BẮT BUỘC</h3>
+					<h3>[*] BẢO HIỂM XÃ HỘI BẮT BUỘC</h3>
 				</div>
-			</div>
+			<!-- </div> -->
 			<div id="div_result_theodoidanhsach_compulsory">
 				<table id="table_result_theodoidanhsach_compulsory"></table>
 			</div>

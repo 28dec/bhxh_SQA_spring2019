@@ -188,6 +188,7 @@
 						echo "<th>Mã BHXH</th>";
 						echo "<th>Tên khách hàng</th>";
 						echo "<th>Giới tính</th>";
+						echo "<th>Loại bảo hiểm</th>";
 						echo "<th>Pay date</th>";
 						echo "<th>Số tiền</th>";
 					echo "</thead>";
@@ -198,6 +199,7 @@
 								echo "<td>" . $value['customer_code'] . "</td>";
 								echo "<td>" . $value['full_name'] . "</td>";
 								echo "<td>" . $value['gender'] . "</td>";
+								echo "<td>" . $value['type_of_insurance'] . "</td>";
 								echo "<td>" . date('m/Y', strtotime($value['pay_date'])) . "</td>";
 								echo "<td>" . $value['money'] . "</td>";
 							echo "</tr>";
