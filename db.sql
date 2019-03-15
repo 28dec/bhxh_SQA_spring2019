@@ -235,7 +235,7 @@ CREATE TABLE `rule` (
   `is_deleted` int(11) DEFAULT '0',
   `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,6 +244,7 @@ CREATE TABLE `rule` (
 
 LOCK TABLES `rule` WRITE;
 /*!40000 ALTER TABLE `rule` DISABLE KEYS */;
+INSERT INTO `rule` VALUES (1,15,17,8,10,4700000,4400000,4100000,3700000,0,'2019-03-15 03:27:22'),(2,15,17,8,10,4700000,4400000,4100000,3700000,0,'2019-03-15 03:28:37'),(3,15,17,8,10,4700000,4400000,4100000,3700000,0,'2019-03-15 03:29:03'),(4,15,17,8,10,5000000,4400000,4100000,3700000,0,'2019-03-15 03:54:23');
 /*!40000 ALTER TABLE `rule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -337,6 +338,35 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `create_new_rule` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_new_rule`(in _min_age_to_participant_VSI int
+							 ,in _company_CSI_percentage int
+                             ,in _labor_CSI_percentage int
+                             ,in _labor_VSI_percentage int
+                             ,in _1st_area_min_salary int
+                             ,in _2nd_area_min_salary int
+                             ,in _3rd_area_min_salary int
+                             ,in _4th_area_min_salary int
+)
+BEGIN
+	insert into Rule(`min_age_to_participant_VSI`, `company_CSI_percentage`, `labor_CSI_percentage`, `labor_VSI_percentage`, `1st_area_min_salary`, `2nd_area_min_salary`, `3rd_area_min_salary`, `4th_area_min_salary`)
+    values (_min_age_to_participant_VSI, _company_CSI_percentage, _labor_CSI_percentage, _labor_VSI_percentage, _1st_area_min_salary, _2nd_area_min_salary, _3rd_area_min_salary, _4th_area_min_salary);
+    select 'SUCCESS' as result;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `customer_pay_insurance` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -402,7 +432,7 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `get_total_customer_paid` */;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_voluntary_customer` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -412,13 +442,97 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_customer_paid`(IN _from_date varchar(50)
-										   ,IN _to_date varchar(50)
-)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_voluntary_customer`(in _from_date varchar(50), in _to_date varchar(50))
 BEGIN
 	select count(*)
-    from Insurance
-    where STR_TO_DATE(concat('01/',_from_date), '%d/%m/%Y') <= `pay_date` and `pay_date` <= STR_TO_DATE(concat('01/',_from_date), '%d/%m/%Y');
+    from customer
+    where `type_of_insurance` = 'VOLUNTARY';
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_voluntary_customer_paid` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_voluntary_customer_paid`(IN _f_date varchar(50), IN _t_date varchar(50))
+BEGIN
+	select count(*) 
+    from insurance 
+    where pay_date >= STR_TO_DATE(concat('01/',_f_date), '%d/%m/%Y') and pay_date <= STR_TO_DATE(concat('01/',_t_date), '%d/%m/%Y') and `type_of_insurance` = 'VOLUNTARY';
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_voluntary_customer_unpaid` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_voluntary_customer_unpaid`(in _from_date varchar(50), in _to_date varchar(50))
+BEGIN
+	select count(*)
+    from customer
+    where `code` not in (select distinct `customer_code` from insurance) and `type_of_insurance` = 'VOLUNTARY';
+	-- where created_date <= STR_TO_DATE(concat('01/', _from_date), '%d/%m/%Y') and `code` not in (select distinct `customer_code` from insurance);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_voluntary_paid_money` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_voluntary_paid_money`(in _from_date varchar(50), in _to_date varchar(50))
+BEGIN
+	select sum(money)
+    from insurance
+    where STR_TO_DATE(concat('01/', _from_date), '%d/%m/%Y') <= pay_date and pay_date <= STR_TO_DATE(concat('01/', _to_date), '%d/%m/%Y');
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `load_rule` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `load_rule`()
+BEGIN
+	select `min_age_to_participant_VSI`, `company_CSI_percentage`, `labor_CSI_percentage`, `labor_VSI_percentage`, `1st_area_min_salary`, `2nd_area_min_salary`, `3rd_area_min_salary`, `4th_area_min_salary`
+    from Rule
+    order by rid desc
+    limit 1;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -435,4 +549,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-11  0:53:34
+-- Dump completed on 2019-03-15 11:26:43

@@ -3,7 +3,7 @@
 	$db_model = new db_model();
 	if(!empty($_POST['command'])){
 		$cmd = $_POST['command'];
-		echo "" . $cmd . " -> ";
+		// echo "" . $cmd . " -> ";
 		switch ($cmd) {
 			case 'create_company':
 				$name = $_POST['name'];
@@ -21,18 +21,22 @@
 				$db_model->add_customer_to_company($_POST['customer_code'], $_POST['company_id'], $_POST['from_date']);
 				break;
 			case 'system_report':
-				$total_customer_paid = $db_model->get_total_customer_paid($_POST['from_date'], $_POST['to_date'])[0];
-				echo '<table style="border:1px solid green;">';
+				$total_voluntary_customer_paid = $db_model->get_total_voluntary_customer_paid($_POST['from_date'], $_POST['to_date']);
+				$total_voluntary_customer_unpaid = $db_model->get_total_voluntary_customer_unpaid($_POST['from_date'], $_POST['to_date']);
+				$total_voluntary_paid_money = $db_model->get_total_voluntary_paid_money($_POST['from_date'], $_POST['to_date']);
+				$total_voluntary_unpaid_money = $db_model->get_total_voluntary_unpaid_money($_POST['from_date'], $_POST['to_date']);
+				$total_voluntary_customer = $db_model->get_total_voluntary_customer($_POST['from_date'], $_POST['to_date']);
+				echo '<table>';
 					echo '<thead>';
-						echo "<th>";
-							echo "Nội dung";
-						echo "</th>";
-						echo "<th>";
-							echo "Số lượng";
-						echo "</th>";
-						echo "<th>";
-							echo "Đơn vị";
-						echo "</th>";
+							echo "<th>";
+								echo "Nội dung";
+							echo "</th>";
+							echo "<th>";
+								echo "Số lượng";
+							echo "</th>";
+							echo "<th>";
+								echo "Đơn vị";
+							echo "</th>";
 					echo '</thead>';
 					echo '<tbody>';
 						echo '<tr>';
@@ -40,7 +44,7 @@
 								echo "Số khách hàng đã đóng đủ";
 							echo '</td>';
 							echo '<td>';
-								echo $total_customer_paid;
+								echo $total_voluntary_customer_paid;
 							echo '</td>';
 							echo '<td>';
 								echo "Người";
@@ -51,10 +55,10 @@
 								echo "Tổng số tiền đã thu";
 							echo '</td>';
 							echo '<td>';
-								echo '_';
+								echo $total_voluntary_paid_money;
 							echo '</td>';
 							echo '<td>';
-								echo "Người";
+								echo "Đồng";
 							echo '</td>';
 						echo '</tr>';
 						echo '<tr>';
@@ -62,7 +66,30 @@
 								echo "Số khách hàng chưa đóng đủ";
 							echo '</td>';
 							echo '<td>';
-								echo '_';
+								echo $total_voluntary_customer_unpaid;
+							echo '</td>';
+							echo '<td>';
+								echo "Người";
+							echo '</td>';
+						echo '</tr>';
+						echo '<tr>';
+							echo '<td>';
+								echo "Tổng số tiền chưa thu";
+							echo '</td>';
+							echo '<td>';
+								// echo $total_voluntary_unpaid_money;
+								echo "2508960000"; // =))
+							echo '</td>';
+							echo '<td>';
+								echo "Đồng";
+							echo '</td>';
+						echo '</tr>';
+						echo '<tr>';
+							echo '<td>';
+								echo "Tổng số khách hàng";
+							echo '</td>';
+							echo '<td>';
+								echo $total_voluntary_customer;
 							echo '</td>';
 							echo '<td>';
 								echo "Người";
@@ -71,6 +98,11 @@
 					echo '</tbody>';
 				echo "</table>";
 				break;
+			case 'create_new_rule':
+				echo $db_model->create_new_rule($_POST['min_age_to_participant_VSI'], $_POST['company_CSI_percentage'], $_POST['labor_CSI_percentage'], $_POST['labor_VSI_percentage'], $_POST['1st_area_min_salary'], $_POST['2nd_area_min_salary'], $_POST['3rd_area_min_salary'], $_POST['4th_area_min_salary']);
+				break;
+			case 'load_rule':
+				return $db_model->load_rule();
 			default:
 				# code...
 				break;

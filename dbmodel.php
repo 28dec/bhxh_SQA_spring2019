@@ -52,16 +52,87 @@
 				print_r($stmt->errorInfo());
 			}
 		}
-		public function get_total_customer_paid($from_date, $to_date){
-			$stmt = $this->pdo->prepare("call get_total_customer_paid(?,?)");
+		public function get_total_voluntary_customer_paid($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_voluntary_customer_paid(?,?)");
 			$stmt->bindParam(1, $from_date);
 			$stmt->bindParam(2, $to_date);
 			if($stmt->execute()){
 				$rps = $stmt->fetch();
-				return $rps;
+				return $rps[0];
 			} else {
-				print_r($stmt->errorInfo());
+				return $stmt->errorInfo()[2];
 			}
+		}
+		public function get_total_voluntary_customer_unpaid($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_voluntary_customer_unpaid(?,?)");
+			$stmt->bindParam(1, $from_date);
+			$stmt->bindParam(2, $to_date);
+			if($stmt->execute()){
+				$rps = $stmt->fetch();
+				return $rps[0];
+			} else {
+				return $stmt->errorInfo()[2];
+			}
+		}
+		public function get_total_voluntary_paid_money($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_voluntary_paid_money(?,?)");
+			$stmt->bindParam(1, $from_date);
+			$stmt->bindParam(2, $to_date);
+			if($stmt->execute()){
+				$rps = $stmt->fetch();
+				return $rps[0];
+			} else {
+				return $stmt->errorInfo()[2];
+			}
+		}
+		public function get_total_voluntary_unpaid_money($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_voluntary_unpaid_money(?,?)");
+			$stmt->bindParam(1, $from_date);
+			$stmt->bindParam(2, $to_date);
+			if($stmt->execute()){
+				$rps = $stmt->fetch();
+				return $rps[0];
+			} else {
+				return $stmt->errorInfo()[2];
+			}
+		}
+		public function get_total_voluntary_customer($from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_total_voluntary_customer(?,?)");
+			$stmt->bindParam(1, $from_date);
+			$stmt->bindParam(2, $to_date);
+			if($stmt->execute()){
+				$rps = $stmt->fetch();
+				return $rps[0];
+			} else {
+				return $stmt->errorInfo()[2];
+			}
+		}
+		public function create_new_rule($min_age_to_participant_VSI, $company_CSI_percentage, $labor_CSI_percentage, $labor_VSI_percentage, $_1st_area_min_salary, $_2nd_area_min_salary, $_3rd_area_min_salary, $_4th_area_min_salary){
+			$stmt = $this->pdo->prepare("call create_new_rule(?, ?, ?, ?, ?, ?, ?, ?);");
+			$stmt->bindParam(1, $min_age_to_participant_VSI);
+			$stmt->bindParam(2, $company_CSI_percentage);
+			$stmt->bindParam(3, $labor_CSI_percentage);
+			$stmt->bindParam(4, $labor_VSI_percentage);
+			$stmt->bindParam(5, $_1st_area_min_salary);
+			$stmt->bindParam(6, $_2nd_area_min_salary);
+			$stmt->bindParam(7, $_3rd_area_min_salary);
+			$stmt->bindParam(8, $_4th_area_min_salary);
+			if($stmt->execute()){
+				$rps = $stmt->fetch();
+				return $rps[0];
+			} else {
+				return $stmt->errorInfo()[2];
+			}
+		}
+		public function load_rule(){
+			$stmt = $this->pdo->prepare("call load_rule();");
+			if($stmt->execute()){
+				$rps = $stmt->fetch();
+				print(json_encode($rps));
+			} else {
+				print(json_encode(array('error'=>"load rule error")));
+			}
+
 		}
 	}
 ?>
