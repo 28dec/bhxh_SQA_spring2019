@@ -6,6 +6,16 @@ $(document).on("click", "#submit_btn_theodoidanhsach", function(){
 	// console.log(payload_compulsory)
 	$('#div_result_theodoidanhsach_voluntary').load("controller.php", payload_voluntary)
 	$('#div_result_theodoidanhsach_compulsory').load("controller.php", payload_compulsory)
+	$('#result_xuatbaocao').hide()
+	$('#result_theodoidanhsach').show()
+})
+
+$(document).on("click", "#submit_btn_xuatbaocao", function(){
+	var payload_person = {'command':'xuatbaocao_person', 'customer_code':$('#customer_code_xuatbaocao').val(), 'from_date':$("#from_date_xuatbaocao").val(), 'to_date':$("#to_date_xuatbaocao").val()}
+	console.log(payload_person)
+	$('#xuatbaocao_person').load('controller.php', payload_person)
+	$('#result_xuatbaocao').show()
+	$('#result_theodoidanhsach').hide()
 })
 
 $(document).on("click", "#btn_cauhinh", function(){

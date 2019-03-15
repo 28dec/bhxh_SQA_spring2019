@@ -183,5 +183,16 @@
 				return $stmt->errorInfo()[2];
 			}
 		}
+		public function report_person($customer_code, $from_date, $to_date){
+			$stmt = $this->pdo->prepare("call get_insurance_by_customer_code(?,?,?)");
+			$stmt->bindParam(1, $customer_code);
+			$stmt->bindParam(2, $from_date);
+			$stmt->bindParam(3, $to_date);
+			if($stmt->execute()){
+				return $stmt->fetchall();
+			} else {
+				return $stmt->errorInfo()[2];
+			}
+		}
 	}
 ?>

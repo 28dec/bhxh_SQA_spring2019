@@ -16,14 +16,18 @@
 				<button id="btn_theodoidanhsach" data-toggle="modal" data-target="#popup_theodoidanhsach">Theo doi danh sach</button>
 			</div>
 			<div class="col-4">
-				<button id="btn_xuatbaocao">Xuat bao cao</button>
+				<button id="btn_xuatbaocao" data-toggle="modal" data-target="#popup_xuatbaocao">Xuat bao cao</button>
 			</div>
 			<div class="col-4">
 				<button id="btn_cauhinh" data-toggle="modal" data-target="#popup_cauhinh">Cau hinh</button>
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container" id="result_xuatbaocao" style="display: none">
+		<div id="xuatbaocao_person"></div>
+		<div id="xuatbaocao_company"></div>
+	</div>
+	<div class="container" id="result_theodoidanhsach" style="display: none">
 		<!-- <h1>RESULT</h1> -->
 		<div class="result_voluntary">
 			<div class="jumbotron">
@@ -56,6 +60,23 @@
 					<input type="text" name="from_date" id = "from_date_theodoidanhsach">
 					<input type="text" name="to_date" id = "to_date_theodoidanhsach">
 					<input type="submit" name="submit" id = "submit_btn_theodoidanhsach">
+				</div>
+				<div class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="popup_xuatbaocao" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					
+				</div>
+				<div class="modal-body">
+					Mã khách hàng: <input type="text" name="customer_code" id="customer_code_xuatbaocao"></input><br>
+					Từ ngày: <input type="text" name="from_date" id = "from_date_xuatbaocao"><br>
+					Đến ngày: <input type="text" name="to_date" id = "to_date_xuatbaocao"><br>
+					<button id="submit_btn_xuatbaocao">VIEW</button>
 				</div>
 				<div class="modal-footer">
 				</div>

@@ -79,7 +79,6 @@
 								echo '</td>';
 								echo '<td>';
 									echo $total_voluntary_unpaid_money;
-									// echo "2508960000"; // =))
 								echo '</td>';
 								echo '<td>';
 									echo "Đồng";
@@ -181,6 +180,31 @@
 				break;
 			case 'load_rule':
 				return $db_model->load_rule();
+			case 'xuatbaocao_person':
+				$result =  $db_model->report_person($_POST['customer_code'], $_POST['from_date'], $_POST['to_date']);
+				echo "<table>";
+					echo "<thead>";
+						echo "<th>STT</th>";
+						echo "<th>Mã BHXH</th>";
+						echo "<th>Tên khách hàng</th>";
+						echo "<th>Giới tính</th>";
+						echo "<th>Pay date</th>";
+						echo "<th>Số tiền</th>";
+					echo "</thead>";
+					echo "<tbody>";
+						foreach ($result as $key => $value) {
+							echo "<tr>";
+								echo "<td>" . ($key+1) . "</td>";
+								echo "<td>" . $value['customer_code'] . "</td>";
+								echo "<td>" . $value['full_name'] . "</td>";
+								echo "<td>" . $value['gender'] . "</td>";
+								echo "<td>" . date('m/Y', strtotime($value['pay_date'])) . "</td>";
+								echo "<td>" . $value['money'] . "</td>";
+							echo "</tr>";
+						}
+					echo "</tbody>";
+				echo "</table>";
+				break;
 			default:
 				# code...
 				break;

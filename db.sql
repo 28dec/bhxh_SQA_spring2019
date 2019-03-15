@@ -430,6 +430,27 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_insurance_by_customer_code` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_insurance_by_customer_code`(in _customer_code varchar(50), in _from_date varchar(50), in _to_date varchar(50))
+BEGIN
+	select c.code as customer_code, c.full_name as full_name, c.gender as gender, i.pay_date as pay_date, i.money as money
+    from insurance as i inner join customer as c on i.customer_code = c.code
+    where `customer_code` = _customer_code and str_to_date(concat('01/', _from_date), '%d/%m/%Y') <= pay_date and pay_date <= str_to_date(concat('01/', _to_date), '%d/%m/%Y');
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `get_total_company` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -623,7 +644,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_total_voluntary_customer_unpaid`(in _from_date varchar(50), in _to_date varchar(50))
 BEGIN
-	select count(*) from customer where `type_of_insurance` = 'VOLUNTARY' and code not in (select count(*) from insurance where pay_date >= STR_TO_DATE(concat('01/',_from_date), '%d/%m/%Y') and pay_date <= STR_TO_DATE(concat('01/',_to_date), '%d/%m/%Y') and `type_of_insurance` = 'VOLUNTARY');
+	select count(*) from customer where `type_of_insurance` = 'VOLUNTARY' and code not in (select `customer_code` from insurance where pay_date >= STR_TO_DATE(concat('01/',_from_date), '%d/%m/%Y') and pay_date <= STR_TO_DATE(concat('01/',_to_date), '%d/%m/%Y') and `type_of_insurance` = 'VOLUNTARY');
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -722,4 +743,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-15 20:12:26
+-- Dump completed on 2019-03-16  3:01:49
